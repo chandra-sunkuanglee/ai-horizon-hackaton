@@ -107,10 +107,53 @@ Each clean row keeps its sale code and gets the flags `is_arms_length`, `is_mult
 - Uses prompt caching.
 - Retries automatically on a fallback model if a request is refused (the API's server-side `fallbacks: "default"` setting).
 
+## How Claude is used
+
+Claude plays two separate roles in this project: one while the app was being **built**, and one while it **runs**.
+
+### 1. Claude Code (CLI): writing the application
+
+The application was developed in a terminal session with [Claude Code](https://claude.com/claude-code), Anthropic's command-line coding agent, working in this project folder. Chandra directed the work: choosing the data sources, deciding features and priorities, reviewing results and asking for changes. Claude Code did the hands-on engineering:
+
+- **Data exploration:** profiled the raw WPRDC files (sale codes, price distributions, validation coverage by year) and found the 2019 coverage problem and the parcel-to-sale match rate.
+- **Pipelines:** wrote the cleaning pipeline (`clean.py`) and the geometry pipeline (`geo.py`), including the parcel "grow–merge–shrink" technique that turns 585,925 parcels into municipality and ward shapes.
+- **App code:** built the FastAPI backend, the React/Leaflet/Recharts frontend, the filters and the map interactions.
+- **Testing:**
+  - Ran the API endpoints and checked the numbers against the data.
+  - Drove the app in headless Chrome (Playwright) and read the screenshots to find visual bugs, for example sale dots being hidden under the map shapes, or the sticky filter bar covering the legend.
+  - Fixed what it found, including a place-name matching bug that counted *East Pittsburgh* as part of *Pittsburgh*.
+- **Demo video:** built the tooling for it: a teleprompter/voice recorder, audio clean-up, a scripted screen recording, and captions.
+
+### 2. Claude API: reasoning over the data at runtime
+
+Inside the running app, the **Ask about the data** panel is powered by the [Anthropic Messages API](https://docs.anthropic.com/) through the official Python SDK (`backend/assistant.py`). Here Claude is the reasoning engine that turns a plain-English question into data queries and an answer you can check:
+
+1. **Question with context:** the user's question (plus earlier turns) is sent to Claude, along with a system prompt describing the dataset and its caveats.
+2. **Planning:** with **adaptive thinking**, Claude decides which facts it needs, such as place names, yearly medians and sample sizes.
+3. **Tool calls:** Claude calls read-only **tools**: `sales_stats`, `price_change`, `top_sales`, `find_names` and `data_quality_report`. The backend runs them against the cleaned data with pandas and returns JSON. Claude can call several tools in parallel and go back for more, up to 8 rounds.
+4. **Reasoning over the results:** Claude compares periods, checks sample sizes, cross-checks arm's-length sales against all priced sales when validation coverage is thin, and flags low-sample figures.
+5. **Answer:** a short Markdown answer with the headline finding, a table and data notes, streamed to the browser. The UI shows every tool call, so each number can be traced back to a query.
+
+The system prompt includes these rules:
+- Answer only from tool results; never invent numbers.
+- State the filter and sample size behind each figure.
+- Flag anything below 30 sales, and note partial years.
+- Remind users that prices mix property types.
+
+**API features used:**
+- **Streaming responses**, so the answer appears as it's written.
+- **Prompt caching** of the system prompt and tool definitions.
+- **Server-side refusal fallback** (`fallbacks: "default"`).
+
+The model is `claude-opus-5` by default and can be changed with `CLAUDE_MODEL` and `CLAUDE_EFFORT` in `backend/.env`.
+
+The two roles are independent. Claude Code is only a development tool and isn't needed to run the app. The Claude API is only needed for the Q&A panel. The map, charts and tables work without an API key.
+
 ## Tech stack
 
 - **Backend:** Python, FastAPI, pandas, pyarrow, shapely, Anthropic Python SDK
 - **Frontend:** React 18, Vite, Leaflet (Esri grey basemap), Recharts, react-markdown
+- **AI:** Claude via the Anthropic Messages API (runtime Q&A); Claude Code CLI (development)
 - **Demo tooling:** Playwright (scripted screen recording), ffmpeg (via `imageio-ffmpeg`)
 
 ## Getting started
@@ -194,7 +237,7 @@ Everything described above is working and uses real data. Nothing is mocked. Cur
 - There's no property-type breakdown, because the sales file doesn't include one.
 - 2026 is a partial year.
 - Claude's answers are grounded in tool results, but in testing it once drew a wrong conclusion from correct numbers, so read its answers critically.
-- The app was built with **Claude Code** as a coding assistant.
+- The app was built with **Claude Code** as the coding assistant (see [How Claude is used](#how-claude-is-used)).
 
 ## Next steps
 
