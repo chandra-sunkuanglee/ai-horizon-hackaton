@@ -1,0 +1,7 @@
+anthropic==1.8.0
+fastapi==0.141.1
+pandas==3.0.6
+pyarrow==25.0.1
+python-dotenv==1.2.3
+shapely==2.1.2
+uvicorn==0.54.0

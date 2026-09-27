@@ -1,0 +1,67 @@
+[
+ {
+  "id": "s01_intro",
+  "title": "Intro (title card)",
+  "text": "Hi, I'm Chandra, a first-year student in the Master of Artificial Intelligence Systems Management program at Carnegie Mellon University. This video is my submission to the AI Horizons Pittsburgh hackathon, housing track. I built an AI-powered dashboard for exploring property sale prices in Allegheny County."
+ },
+ {
+  "id": "s02_problem",
+  "title": "The problem (numbers card)",
+  "text": "The county publishes every property sale, but the raw data is messy. Out of three hundred sixty-seven thousand records from 2016 to 2026, almost a third are one-dollar deeds, family transfers, or duplicates. So I built a cleaning pipeline, an interactive map and dashboard, and a question-and-answer assistant powered by Claude, that is honest about data quality."
+ },
+ {
+  "id": "s03_overview",
+  "title": "Dashboard overview",
+  "text": "Here is the dashboard, running live. The filter bar at the top controls everything: which sales to include, and the year range. By default, it uses only sales the county assessor validated as real market sales. The 2025 median is two hundred seventy thousand dollars, up seventy-four percent since 2016."
+ },
+ {
+  "id": "s04_map",
+  "title": "The map",
+  "text": "The map shows every municipality, with Pittsburgh split into its thirty-two wards. I built these shapes from the county's parcel boundary file, merging more than half a million parcels. Hovering shows the median price and how many sales are behind it. Grey places have fewer than thirty sales, so a noisy number never looks solid."
+ },
+ {
+  "id": "s05_click",
+  "title": "Clicking a place",
+  "text": "Clicking a place zooms in and puts every individual sale on the map. Here is Mount Lebanon. The card shows the median, the price change, and the sample size behind each number. Clicking a dot shows the address, price, and date of that sale."
+ },
+ {
+  "id": "s06_years",
+  "title": "Year filter and price change",
+  "text": "Now I switch the map to price change. About half the county turns grey, because the assessor validated very few sales in 2016 and 2017. That is a real data quality problem, and the map shows it instead of hiding it. Switching to all priced sales fills most of it back in. And with the Since 2020 preset, every panel updates to the post-pandemic market."
+ },
+ {
+  "id": "s07_charts",
+  "title": "Trend chart and table",
+  "text": "Below the map, the trend chart compares the places I clicked with the whole county, and the municipality table ranks all one hundred thirty places, with low sample badges where the data is thin."
+ },
+ {
+  "id": "s08_quality",
+  "title": "Data quality panel",
+  "text": "The data quality panel documents every cleaning step, how many rows each one removed, and how validation coverage changes by year."
+ },
+ {
+  "id": "s09_ask",
+  "title": "Asking Claude",
+  "text": "Now the AI part. From the map card, I ask Claude about Mount Lebanon. Claude never sees the raw data directly. It calls read-only query tools on the cleaned dataset, and the interface lists every query it ran."
+ },
+ {
+  "id": "s10_answer",
+  "title": "Claude's answer",
+  "text": "The answer streams in with a table. It gives the sample size behind each number, cross-checks against all priced sales, and ends with data notes. Every number traces back to a query you can inspect."
+ },
+ {
+  "id": "s11_followup",
+  "title": "Follow-up question",
+  "text": "Follow-up questions keep the context. When I ask about Haysville, one of the smallest boroughs, Claude says plainly that a handful of sales cannot support a trend, instead of inventing one."
+ },
+ {
+  "id": "s12_honest",
+  "title": "What's real, what's not (card)",
+  "text": "To be clear about what is real: everything you saw is working. The data, the map, the charts, and Claude's answers are live, and nothing is mocked. The limitations: it runs locally and is not deployed yet. The county sales file has no property type, so medians mix houses, condos, and land. 2026 is a partial year. And in testing, Claude once drew a wrong conclusion from correct numbers, so answers should still be read critically. I built this with Claude Code as my coding assistant."
+ },
+ {
+  "id": "s13_outro",
+  "title": "Outro (card)",
+  "text": "Next steps are deploying it, adding property types from the county assessment data, and letting people compare their own home with its neighborhood. Thank you for watching."
+ }
+]

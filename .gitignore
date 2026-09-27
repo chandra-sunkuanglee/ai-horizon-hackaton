@@ -1,0 +1,32 @@
+# Python / Node
+.venv/
+__pycache__/
+*.pyc
+node_modules/
+frontend/dist/
+
+# Secrets - the Anthropic API key lives here, never commit it
+.env
+backend/.env
+
+# Data - download from WPRDC (see README) and rebuild with backend/clean.py + backend/geo.py
+/20*.csv
+parcel boundary.csv
+*.csv
+data/
+
+# Demo video and recordings (personal media; publish the video separately)
+demo/demo_video.mp4
+demo/demo_video_silent.mp4
+demo/voice/
+demo/audio/
+demo/raw/
+demo/timeline.json
+demo/durations.json
+*.webm
+*.mp4
+*.wav
+*.log
+
+# Original logo file (a copy is kept at demo/logo.png)
+/AI-Horizon-image.png

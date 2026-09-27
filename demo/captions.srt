@@ -1,0 +1,243 @@
+1
+00:00:00,000 --> 00:00:05,433
+Hi, I'm Chandra, a first-year student in the Master of Artificial Intelligence Systems
+
+2
+00:00:05,433 --> 00:00:08,529
+Management program at Carnegie Mellon University.
+
+3
+00:00:08,529 --> 00:00:13,773
+This video is my submission to the AI Horizons Pittsburgh hackathon, housing track.
+
+4
+00:00:13,773 --> 00:00:19,270
+I built an AI-powered dashboard for exploring property sale prices in Allegheny County.
+
+5
+00:00:18,578 --> 00:00:24,146
+The county publishes every property sale, but the raw data is messy.
+
+6
+00:00:24,146 --> 00:00:29,715
+Out of three hundred sixty-seven thousand records from 2016 to 2026,
+
+7
+00:00:29,715 --> 00:00:35,365
+almost a third are one-dollar deeds, family transfers, or duplicates.
+
+8
+00:00:35,365 --> 00:00:40,688
+So I built a cleaning pipeline, an interactive map and dashboard,
+
+9
+00:00:40,688 --> 00:00:47,976
+and a question-and-answer assistant powered by Claude, that is honest about data quality.
+
+10
+00:00:48,279 --> 00:00:51,237
+Here is the dashboard, running live.
+
+11
+00:00:51,237 --> 00:00:55,018
+The filter bar at the top controls everything:
+
+12
+00:00:55,018 --> 00:00:58,551
+which sales to include, and the year range.
+
+13
+00:00:58,551 --> 00:01:05,290
+By default, it uses only sales the county assessor validated as real market sales.
+
+14
+00:01:05,290 --> 00:01:09,892
+The 2025 median is two hundred seventy thousand dollars,
+
+15
+00:01:09,892 --> 00:01:12,768
+up seventy-four percent since 2016.
+
+16
+00:01:13,074 --> 00:01:19,839
+The map shows every municipality, with Pittsburgh split into its thirty-two wards.
+
+17
+00:01:19,839 --> 00:01:24,789
+I built these shapes from the county's parcel boundary file,
+
+18
+00:01:24,789 --> 00:01:28,172
+merging more than half a million parcels.
+
+19
+00:01:28,172 --> 00:01:33,534
+Hovering shows the median price and how many sales are behind it.
+
+20
+00:01:33,534 --> 00:01:39,969
+Grey places have fewer than thirty sales, so a noisy number never looks solid.
+
+21
+00:01:40,276 --> 00:01:46,859
+Clicking a place zooms in and puts every individual sale on the map.
+
+22
+00:01:46,859 --> 00:01:48,989
+Here is Mount Lebanon.
+
+23
+00:01:48,989 --> 00:01:57,121
+The card shows the median, the price change, and the sample size behind each number.
+
+24
+00:01:57,121 --> 00:02:03,220
+Clicking a dot shows the address, price, and date of that sale.
+
+25
+00:02:03,528 --> 00:02:07,051
+Now I switch the map to price change.
+
+26
+00:02:07,051 --> 00:02:10,193
+About half the county turns grey,
+
+27
+00:02:10,193 --> 00:02:16,191
+because the assessor validated very few sales in 2016 and 2017.
+
+28
+00:02:16,191 --> 00:02:23,712
+That is a real data quality problem, and the map shows it instead of hiding it.
+
+29
+00:02:23,712 --> 00:02:28,949
+Switching to all priced sales fills most of it back in.
+
+30
+00:02:28,949 --> 00:02:36,566
+And with the Since 2020 preset, every panel updates to the post-pandemic market.
+
+31
+00:02:36,882 --> 00:02:44,295
+Below the map, the trend chart compares the places I clicked with the whole county,
+
+32
+00:02:44,295 --> 00:02:49,923
+and the municipality table ranks all one hundred thirty places,
+
+33
+00:02:49,923 --> 00:02:54,031
+with low sample badges where the data is thin.
+
+34
+00:02:55,124 --> 00:03:01,240
+The data quality panel documents every cleaning step, how many rows each one removed,
+
+35
+00:03:01,240 --> 00:03:04,407
+and how validation coverage changes by year.
+
+36
+00:03:04,714 --> 00:03:06,010
+Now the AI part.
+
+37
+00:03:06,010 --> 00:03:10,224
+From the map card, I ask Claude about Mount Lebanon.
+
+38
+00:03:10,224 --> 00:03:13,465
+Claude never sees the raw data directly.
+
+39
+00:03:13,465 --> 00:03:17,841
+It calls read-only query tools on the cleaned dataset,
+
+40
+00:03:17,841 --> 00:03:21,325
+and the interface lists every query it ran.
+
+41
+00:03:21,636 --> 00:03:24,545
+The answer streams in with a table.
+
+42
+00:03:24,545 --> 00:03:31,444
+It gives the sample size behind each number, cross-checks against all priced sales,
+
+43
+00:03:31,444 --> 00:03:33,522
+and ends with data notes.
+
+44
+00:03:33,522 --> 00:03:37,845
+Every number traces back to a query you can inspect.
+
+45
+00:03:38,159 --> 00:03:41,123
+Follow-up questions keep the context.
+
+46
+00:03:41,123 --> 00:03:45,690
+When I ask about Haysville, one of the smallest boroughs,
+
+47
+00:03:45,690 --> 00:03:51,057
+Claude says plainly that a handful of sales cannot support a trend,
+
+48
+00:03:51,057 --> 00:03:53,060
+instead of inventing one.
+
+49
+00:04:01,996 --> 00:04:04,689
+To be clear about what is real:
+
+50
+00:04:04,689 --> 00:04:07,294
+everything you saw is working.
+
+51
+00:04:07,294 --> 00:04:14,591
+The data, the map, the charts, and Claude's answers are live, and nothing is mocked.
+
+52
+00:04:14,591 --> 00:04:15,981
+The limitations:
+
+53
+00:04:15,981 --> 00:04:19,455
+it runs locally and is not deployed yet.
+
+54
+00:04:19,455 --> 00:04:26,751
+The county sales file has no property type, so medians mix houses, condos, and land.
+
+55
+00:04:26,751 --> 00:04:28,749
+2026 is a partial year.
+
+56
+00:04:28,749 --> 00:04:35,090
+And in testing, Claude once drew a wrong conclusion from correct numbers,
+
+57
+00:04:35,090 --> 00:04:38,825
+so answers should still be read critically.
+
+58
+00:04:38,825 --> 00:04:43,428
+I built this with Claude Code as my coding assistant.
+
+59
+00:04:43,735 --> 00:04:49,638
+Next steps are deploying it, adding property types from the county assessment data,
+
+60
+00:04:49,638 --> 00:04:54,189
+and letting people compare their own home with its neighborhood.
+
+61
+00:04:54,189 --> 00:04:55,825
+Thank you for watching.
